@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
-import './App.css';
+import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Header from "./Header";
-import Home from "./Home";
-import Checkout from "./Checkout";
-import Login from './Login'
+import Header from "./componenets/Header/Header";
+import Home from "./componenets/Home/Home";
+import Checkout from "./componenets/Checkout/Checkout";
+import Login from "./componenets/Login/Login";
 import { auth } from "./firebase";
-import { useStateValue } from './StateProvider';
-
-
+import { useStateValue } from "./componenets/StateProvider";
+import Invoice from "./componenets/Checkout/Invoice/Invoice";
+import invoice from "./componenets/invoice";
+import { PDFViewer } from "@react-pdf/renderer";
+import UserLocation from "./componenets/UserLocation/UserLocation";
 
 function App() {
-
-  const[{ user }, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -20,8 +21,8 @@ function App() {
         //the user is logged in
         dispatch({
           type: "SET_USER",
-          user: authUser
-        })
+          user: authUser,
+        });
       } else {
         //the user is logged out
         dispatch({
@@ -33,8 +34,8 @@ function App() {
 
     return () => {
       unsubscribe();
-    }
-  }, [])
+    };
+  }, []);
   console.log("user is  >>>>", user);
 
   return (
@@ -48,6 +49,17 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
+          <Route path="/invoice">
+            <Header />
+            <PDFViewer width="1000" height="930">
+              <Invoice invoice={invoice} />
+            </PDFViewer>
+          </Route>
+          <Route path="/userlocation">
+            <Header />
+
+            <UserLocation />
+          </Route>
           <Route path="/">
             <Header />
             <Home />
@@ -55,7 +67,6 @@ function App() {
         </Switch>
       </div>
     </Router>
-    
   );
 }
 

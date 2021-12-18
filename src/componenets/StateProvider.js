@@ -8,9 +8,9 @@ export const StateContext = createContext();
 
 //BUILD A PROVIDER
 export const StateProvider = ({ reducer, initialState, children }) => (
-    <StateContext.Provider value={useReducer(reducer, initialState)}>
-        {children}
-    </StateContext.Provider>
+  <StateContext.Provider value={useReducer(reducer, initialState)}>
+    {children}
+  </StateContext.Provider>
 );
 
 //THIS IS HOW WE USE IT INSIDE OF A COMPONENT
